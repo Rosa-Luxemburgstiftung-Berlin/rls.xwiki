@@ -23,6 +23,7 @@
     dest: /etc/dbconfig-common/xwiki.conf
     backup: true
     mode: '0600'
+  diff: false
 
 - name: install xwiki ...
   ansible.builtin.apt:
