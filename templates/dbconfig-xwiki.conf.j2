@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+dbc_install='true'
+dbc_upgrade='true'
+dbc_remove='true'
+
+dbc_dbtype='{{ dbconfig.dbtype }}'
+dbc_dbuser='{{ dbconfig.dbuser }}'
+dbc_dbpass='{{ dbconfig.dbpass }}'
+dbc_dbserver='{{ dbconfig.dbserver }}'
+
+{% if dbconfig.dbport is defined %}
+dbc_dbport='{{ dbconfig.dbport }}'
+{% endif %}
+
+dbc_dbname='{{ dbconfig.dbname }}'
+
+# end of dbconfig

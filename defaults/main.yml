@@ -1,0 +1,56 @@
+---
+
+# if you require additional packages, please just append them
+xwiki_required_packages:
+  - dbconfig-common
+#  - default-jdk
+#  - mariadb-server
+
+xwiki_repo_key_url: https://maven.xwiki.org/xwiki-keyring.gpg
+xwiki_repo_key_dest: /usr/share/keyrings/xwiki-keyring.gpg
+xwiki_repo: "deb [signed-by={{ xwiki_repo_key_dest }}] http://maven.xwiki.org stable/"
+
+# set the package son hold
+xwiki_hold_package: true
+
+xwiki_appserver: tomcat10  # xjetty, tomcat9
+xwiki_dbserver: mariadb  # mysql, pgsql, ...
+
+tomcatjavaopts: "-Xmx1024m"
+
+# packages: choose the one you prefer
+xwiki_packages:
+  - xwiki-solr-all  # comment out if no standalone Solr instance is desired
+  - xwiki-{{ xwiki_appserver}}-{{ xwiki_dbserver }}
+
+dbconfig:
+  dbtype: "{% if xwiki_dbserver in ['mariadb', 'mysql'] %}mysql{% else %}{{ xwiki_dbserver }}{% endif %}"
+  dbuser: xwiki
+  dbpass: UNDEFINED
+  dbname: xwiki
+  dbserver: localhost
+  # dbport: 3306
+
+# TODO: make this generic
+xwiki_service: "{% if xwiki_appserver=='xjetty' %}xwiki{% else %}{{ xwiki_appserver }}{% endif %}"
+
+xwiki_etc: /etc/xwiki
+xwiki_lib: /usr/lib/xwiki
+
+# xwiki configuration
+xwiki:
+  properties: {}  # /etc/xwiki/xwiki.properties
+    # environment.permanentDirectory: /var/lib/xwiki/data
+  cfg: {}  # /etc/xwiki/xwiki.cfg
+    # xwiki.encoding: UTF-8
+    # xwiki.authentication.authclass: org.xwiki.contrib.ldap.XWikiLDAPAuthServiceImpl
+    # xwiki.authentication.ldap: '1'
+    # xwiki.authentication.ldap.trylocal: '1'
+    # xwiki.authentication.ldap.server: ldap.ykiwi.org
+    # xwiki.authentication.ldap.ssl: 1
+    # xwiki.authentication.ldap.base_DN: OU=KIWIS,DC=ykiwi,DC=org
+    # xwiki.authentication.ldap.bind_DN: 'YKIWI\\{0}'
+    # xwiki.authentication.ldap.bind_pass: '{1}'
+    # xwiki.authentication.ldap.UID_attr: sAMAccountName
+    # xwiki.authentication.ldap.fields_mapping: 'name=sAMAccountName,last_name=sn,first_name=givenName,email=mail'
+    # xwiki.authentication.ldap.searchPageSize: 1000

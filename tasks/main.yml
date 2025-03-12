@@ -1,0 +1,69 @@
+---
+
+- name: install required packages
+  ansible.builtin.apt:
+    name: "{{ xwiki_required_packages }}"
+    update_cache: true
+  when: xwiki_required_packages
+
+- name: xwiki apt key
+  ansible.builtin.get_url:
+    url: "{{ xwiki_repo_key_url }}"
+    dest: "{{ xwiki_repo_key_dest }}"
+    mode: "0644"
+
+- name: xwiki apt repo
+  ansible.builtin.apt_repository:
+    repo: "{{ xwiki_repo }}"
+    filename: xwiki
+
+- name: dbconfig for xwiki
+  ansible.builtin.template:
+    src: dbconfig-xwiki.conf.j2
+    dest: /etc/dbconfig-common/xwiki.conf
+    backup: true
+    mode: '0600'
+
+- name: install xwiki ...
+  ansible.builtin.apt:
+    name: "{{ xwiki_packages }}"
+    update_cache: true
+
+- name: set xwiki package on hold
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items: "{{ xwiki_packages }}"
+  when:
+    - xwiki_hold_package | bool
+
+- name: apply tomcat mem settings
+  ansible.builtin.lineinfile:
+    path: /etc/default/{{ xwiki_appserver }}
+    line: 'JAVA_OPTS="${JAVA_OPTS} {{ tomcatjavaopts }}"'
+    insertafter: '^JAVA_OPTS="-Djava.awt.headless=true'
+    regexp: '^JAVA_OPTS="\${JAVA_OPTS}'
+    mode: '0644'
+  notify: xwiki restart
+  when:
+    - xwiki_appserver is match("tomcat.*")
+    - tomcatjavaopts is defined
+    - tomcatjavaopts
+
+- name: apply xwiki cfg
+  ansible.builtin.lineinfile:
+    path: /etc/xwiki/xwiki.cfg
+    line: "{{ item.key }}={{ item.value }}"
+    regexp: '^{{ item.key }} *='
+    mode: '0644'
+  notify: xwiki restart
+  with_dict: "{{ xwiki.cfg }}"
+
+- name: apply xwiki properties
+  ansible.builtin.lineinfile:
+    path: /etc/xwiki/xwiki.properties
+    line: "{{ item.key }}={{ item.value }}"
+    regexp: '^{{ item.key }} *='
+    mode: '0644'
+  notify: xwiki restart
+  with_dict: "{{ xwiki.properties }}"

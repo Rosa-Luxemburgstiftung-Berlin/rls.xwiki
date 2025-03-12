@@ -1,0 +1,6 @@
+---
+
+- name: xwiki restart
+  ansible.builtin.systemd_service:
+    state: restarted
+    name: "{{ xwiki_service }}"
