@@ -53,7 +53,7 @@
 
 - name: apply xwiki cfg
   ansible.builtin.lineinfile:
-    path: /etc/xwiki/xwiki.cfg
+    path: "{{ xwiki_etc }}/xwiki.cfg"
     line: "{{ item.key }}={{ item.value }}"
     regexp: '^{{ item.key }} *='
     mode: '0644'
@@ -62,9 +62,11 @@
 
 - name: apply xwiki properties
   ansible.builtin.lineinfile:
-    path: /etc/xwiki/xwiki.properties
+    path: "{{ xwiki_etc }}/xwiki.properties"
     line: "{{ item.key }}={{ item.value }}"
     regexp: '^{{ item.key }} *='
     mode: '0644'
   notify: xwiki restart
   with_dict: "{{ xwiki.properties }}"
+
+...
