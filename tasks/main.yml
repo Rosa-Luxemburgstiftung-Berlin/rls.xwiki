@@ -69,4 +69,21 @@
   notify: xwiki restart
   with_dict: "{{ xwiki.properties }}"
 
+- name: copy files to tomacat conf dir
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/var/lib/tomcat10/conf/{{ item }}"
+    mode: "0640"
+    owner: tomcat
+    group: tomcat
+  notify: xwiki restart
+  with_items: "{{ tomcatconffiles }}"
+  when:
+    - xwiki_appserver is match("tomcat.*")
+
+- name: tomcat - catalina connector
+  ansible.builtin.include_tasks: tomcatcatalinaconnector.yml
+  when:
+    - xwiki_appserver is match("tomcat.*")
+
 ...

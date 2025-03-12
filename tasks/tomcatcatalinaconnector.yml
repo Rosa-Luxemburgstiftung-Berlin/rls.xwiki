@@ -1,0 +1,58 @@
+---
+
+- name: tomcat - remove catalina connector
+  community.general.xml:
+    backup: true
+    path: /etc/{{ xwiki_appserver }}/server.xml
+    xpath: '/Server/Service[@name="Catalina"]/Connector[@port="{{ item.key }}"]'
+    state: absent
+    pretty_print: true
+  notify: xwiki restart
+  with_dict: "{{ catalina.connector }}"
+  when:
+    - xwiki_appserver is match("tomcat.*")
+    - item.value.state | default('present') == 'absent'
+
+- name: tomcat - add catalina connector
+  community.general.xml:
+    backup: true
+    path: /etc/{{ xwiki_appserver }}/server.xml
+    xpath: '/Server/Service[@name="Catalina"]/Connector[@port="{{ item.key }}"]'
+    state: present
+    pretty_print: true
+  notify: xwiki restart
+  with_dict: "{{ catalina.connector }}"
+  when:
+    - xwiki_appserver is match("tomcat.*")
+    - item.value.state | default('present') == 'present'
+
+- name: tomcat - add catalina connector elements
+  community.general.xml:
+    backup: true
+    path: /etc/{{ xwiki_appserver }}/server.xml
+    xpath: '/Server/Service[@name="Catalina"]/Connector[@port="{{ item.key }}"]'
+    set_children: "{{ item.value.elements }}"
+    input_type: xml
+    pretty_print: true
+  notify: xwiki restart
+  with_dict: "{{ catalina.connector }}"
+  when:
+    - xwiki_appserver is match("tomcat.*")
+    - item.value.state | default('present') == 'present'
+    - item.value.elements is defined
+    - item.value.elements
+
+- name: tomcat - add catalina connector attributes
+  ansible.builtin.include_tasks: tomcatcatalinaconnectorattributes.yml
+  vars:
+    _port: "{{ _catalinaconnector.key }}"
+    _attributes: "{{ _catalinaconnector.value }}"
+  with_dict: "{{ catalina.connector }}"
+  loop_control:
+    loop_var: _catalinaconnector
+  when:
+    - xwiki_appserver is match("tomcat.*")
+    - _catalinaconnector.value.state | default('present') == 'present'
+
+
+...

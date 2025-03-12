@@ -1,0 +1,14 @@
+---
+
+- name: tomcat - add catalina connector attribute
+  community.general.xml:
+    backup: true
+    path: /etc/{{ xwiki_appserver }}/server.xml
+    xpath: '/Server/Service[@name="Catalina"]/Connector[@port="{{ _port }}"]'
+    attribute: "{{ item.key }}"
+    value: "{{ item.value }}"
+    pretty_print: true
+  with_dict: "{{ _attributes }}"
+  notify: xwiki restart
+  when:
+    - item.key not in ['state', 'elements']

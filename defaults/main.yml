@@ -2,6 +2,7 @@
 
 xwiki_required_packages:
   - dbconfig-common
+  - python3-lxml
 
 # if you require additional packages ...
 xwiki_additional_packages: []
@@ -57,3 +58,35 @@ xwiki:
     # xwiki.authentication.ldap.UID_attr: sAMAccountName
     # xwiki.authentication.ldap.fields_mapping: 'name=sAMAccountName,last_name=sn,first_name=givenName,email=mail'
     # xwiki.authentication.ldap.searchPageSize: 1000
+
+
+# files to copy to tomcat conf dir
+tomcatconffiles: []
+# example for a keystore
+#tomcatconffiles:
+# - xwiki-rsa.jks
+
+# catalina connector
+# https://tomcat.apache.org/tomcat-10.0-doc/config/http.html
+catalina:
+  connector: {}
+# example on how to remove the default connector on port 8080
+# and use a ssl enable connector on port 8443 bound to loopback only
+#catalina:
+#  connector:
+#    8080: # port
+#      state: absent
+#    8443:
+#      state: present
+#      maxParameterCount: 1000
+#      address: 127.0.0.1
+#      protocol: "org.apache.coyote.http11.Http11NioProtocol"
+#      maxThreads: 150
+#      SSLEnabled: "true"
+#      elements:
+#        - '<SSLHostConfig>
+#            <Certificate certificateKeystoreFile="conf/xwiki-rsa.jks"
+#                         certificateKeystorePassword="changeit" type="RSA" />
+#          </SSLHostConfig>'
+
+...
