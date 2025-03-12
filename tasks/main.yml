@@ -1,8 +1,8 @@
 ---
 
-- name: install required packages
+- name: install required and additional packages
   ansible.builtin.apt:
-    name: "{{ xwiki_required_packages }}"
+    name: "{{ xwiki_required_packages + xwiki_additional_packages }}"
     update_cache: true
   when: xwiki_required_packages
 

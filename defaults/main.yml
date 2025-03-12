@@ -1,10 +1,10 @@
 ---
 
-# if you require additional packages, please just append them
 xwiki_required_packages:
   - dbconfig-common
-#  - default-jdk
-#  - mariadb-server
+
+# if you require additional packages ...
+xwiki_additional_packages: []
 
 xwiki_repo_key_url: https://maven.xwiki.org/xwiki-keyring.gpg
 xwiki_repo_key_dest: /usr/share/keyrings/xwiki-keyring.gpg
@@ -41,6 +41,9 @@ xwiki_lib: /usr/lib/xwiki
 xwiki:
   properties: {}  # /etc/xwiki/xwiki.properties
     # environment.permanentDirectory: /var/lib/xwiki/data
+    # openoffice.serverType: '0'
+    # openoffice.autoStart: 'true'
+    # openoffice.homePath: /usr/lib/libreoffice/
   cfg: {}  # /etc/xwiki/xwiki.cfg
     # xwiki.encoding: UTF-8
     # xwiki.authentication.authclass: org.xwiki.contrib.ldap.XWikiLDAPAuthServiceImpl
