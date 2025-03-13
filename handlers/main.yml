@@ -4,3 +4,8 @@
   ansible.builtin.systemd_service:
     state: restarted
     name: "{{ xwiki_service }}"
+
+- name: systemctl daemon-reload
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  notify: xwiki restart

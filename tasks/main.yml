@@ -69,6 +69,16 @@
   notify: xwiki restart
   with_dict: "{{ xwiki.properties }}"
 
+- name: configure ReadWritePaths
+  ansible.builtin.lineinfile:
+    path: "{% if xwiki_appserver=='xjetty' %}/lib/systemd/system/xwiki.service{% else %}/etc/systemd/system/{{ xwiki_appserver }}.service.d/xwiki-{{ xwiki_appserver }}-systemd.conf{% endif %}"
+    line: "ReadWritePaths=/var/lib/xwiki/data {{ systemdReadWritePaths | join(' ') }}"
+    regexp: '^ReadWritePaths='
+  notify:
+    - systemctl daemon-reload
+    - xwiki restart
+  when: systemdReadWritePaths
+
 - name: copy files to tomacat conf dir
   ansible.builtin.copy:
     src: "{{ item }}"

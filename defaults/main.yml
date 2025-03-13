@@ -59,6 +59,8 @@ xwiki:
     # xwiki.authentication.ldap.fields_mapping: 'name=sAMAccountName,last_name=sn,first_name=givenName,email=mail'
     # xwiki.authentication.ldap.searchPageSize: 1000
 
+# list of additional ReadWritePaths to configure
+systemdReadWritePaths: []
 
 # files to copy to tomcat conf dir
 tomcatconffiles: []
@@ -89,4 +91,5 @@ catalina:
 #                         certificateKeystorePassword="changeit" type="RSA" />
 #          </SSLHostConfig>'
 
+# TODO: https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/InstallationViaAPT/#HXWikiasrootwebapp28shortURLs29
 ...
