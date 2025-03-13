@@ -91,6 +91,15 @@
   when:
     - xwiki_appserver is match("tomcat.*")
 
+# required for libreoffice
+- name: create /var/lib/tomcat/.cache/ for libreoffice
+  ansible.builtin.file:
+    path: /var/lib/tomcat/.cache/
+    mode: directory
+    owner: tomacat
+    group: tomcat
+    mode: '0755'
+
 - name: tomcat - catalina connector
   ansible.builtin.include_tasks: tomcatcatalinaconnector.yml
   when:
