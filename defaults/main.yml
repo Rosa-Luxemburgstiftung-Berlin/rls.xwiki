@@ -61,9 +61,9 @@ xwiki:
 
 # list of additional ReadWritePaths to configure
 # example for using libreoffice
-#systemdReadWritePaths:
+#systemdreadwritepaths:
 #  - /var/lib/tomcat/.cache
-systemdReadWritePaths: []
+systemdreadwritepaths: []
 
 # files to copy to tomcat conf dir
 # example for a keystore
