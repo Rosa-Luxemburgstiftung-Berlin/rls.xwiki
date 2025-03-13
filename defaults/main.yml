@@ -60,13 +60,16 @@ xwiki:
     # xwiki.authentication.ldap.searchPageSize: 1000
 
 # list of additional ReadWritePaths to configure
+# example for using libreoffice
+#systemdReadWritePaths:
+#  - /var/lib/tomcat/.cache
 systemdReadWritePaths: []
 
 # files to copy to tomcat conf dir
-tomcatconffiles: []
 # example for a keystore
 #tomcatconffiles:
 # - xwiki-rsa.jks
+tomcatconffiles: []
 
 # catalina connector
 # https://tomcat.apache.org/tomcat-10.0-doc/config/http.html
