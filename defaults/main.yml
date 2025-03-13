@@ -94,5 +94,8 @@ catalina:
 #                         certificateKeystorePassword="changeit" type="RSA" />
 #          </SSLHostConfig>'
 
-# TODO: https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/InstallationViaAPT/#HXWikiasrootwebapp28shortURLs29
+# TODO:
+#   * webapp path : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/InstallationViaAPT/#HXWikiasrootwebapp28shortURLs29
+#   * sql indexes : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/InstallationWAR/InstallationMySQL/#HIndexes
+#   * user tuning : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Performances/#HLargenumberofusers
 ...
