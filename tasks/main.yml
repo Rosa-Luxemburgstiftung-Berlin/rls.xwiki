@@ -95,7 +95,7 @@
 - name: create /var/lib/tomcat/.cache/ for libreoffice
   ansible.builtin.file:
     path: /var/lib/tomcat/.cache/
-    mode: directory
+    state: directory
     owner: tomacat
     group: tomcat
     mode: '0755'
