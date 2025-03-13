@@ -96,7 +96,7 @@
   ansible.builtin.file:
     path: /var/lib/tomcat/.cache/
     state: directory
-    owner: tomacat
+    owner: tomcat
     group: tomcat
     mode: '0755'
 
