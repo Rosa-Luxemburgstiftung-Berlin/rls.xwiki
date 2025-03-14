@@ -51,6 +51,7 @@ xwiki:
     openoffice.autoStart: 'true'
     openoffice.homePath: /usr/lib/libreoffice/
   cfg:
+    xwiki.store.cache.capacity: 1000
 
 tomcatconffiles:
   - xwiki.ykiwi.p12
