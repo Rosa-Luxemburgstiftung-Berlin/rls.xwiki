@@ -1,0 +1,10 @@
+---
+exclude_paths:
+  - molecule/
+  - .github/
+  - .pre-commit-config.yaml
+
+skip_list:
+  - experimental
+  - name[casing]
+  - yaml[line-length]
