@@ -5,6 +5,14 @@
 
 Setup [XWiki](https://www.xwiki.org/) on debian
 
+## Features
+
+  * deploy and configure xwiki on debian for
+    * different appserver: tomcat10 , tomcat9, xjetty
+    * different dbserver: mariadb, mysql, pgsql, ...
+  * optional configuration for tomcat connectors
+  * optional configuration for apache proxy
+
 ## Role Variables
 
 [defaults/main.yml](defaults/main.yml)
@@ -12,7 +20,7 @@ Setup [XWiki](https://www.xwiki.org/) on debian
 
 ## Example
 
-### vars
+### Vars
 
 run xwiki with ssl support and apache proxy
 
@@ -76,7 +84,7 @@ apache:
   Proxy: 127.0.0.1:8443
   xwiki_proto: https
 ```
-### play
+### Play
 
 ```yaml
 - hosts: xwiki
