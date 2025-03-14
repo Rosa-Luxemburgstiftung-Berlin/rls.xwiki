@@ -71,7 +71,7 @@
 
 - name: configure ReadWritePaths
   ansible.builtin.lineinfile:
-    path: "{% if xwiki_appserver=='xjetty' %}/lib/systemd/system/xwiki.service{% else %}/etc/systemd/system/{{ xwiki_appserver }}.service.d/xwiki-{{ xwiki_appserver }}-systemd.conf{% endif %}"
+    path: "{% if xwiki_appserver == 'xjetty' %}/lib/systemd/system/xwiki.service{% else %}/etc/systemd/system/{{ xwiki_appserver }}.service.d/xwiki-{{ xwiki_appserver }}-systemd.conf{% endif %}"
     line: "ReadWritePaths=/var/lib/xwiki/data {{ systemdreadwritepaths | join(' ') }}"
     regexp: '^ReadWritePaths='
   notify:
@@ -105,4 +105,13 @@
   when:
     - xwiki_appserver is match("tomcat.*")
 
+- name: ensure service is started - {{ xwiki_service }}
+  ansible.builtin.systemd_service:
+    state: started
+    name: "{{ xwiki_service }}"
+
+- name: setup apache2 as reverse proxy
+  ansible.builtin.include_tasks: apache.yml
+  when:
+    - use_apache_proxy
 ...

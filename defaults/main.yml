@@ -22,7 +22,7 @@ tomcatjavaopts: "-Xmx1024m"
 # packages: choose the one you prefer
 xwiki_packages:
   - xwiki-solr-all  # comment out if no standalone Solr instance is desired
-  - xwiki-{{ xwiki_appserver}}-{{ xwiki_dbserver }}
+  - xwiki-{{ xwiki_appserver }}-{{ xwiki_dbserver }}
 
 dbconfig:
   dbtype: "{% if xwiki_dbserver in ['mariadb', 'mysql'] %}mysql{% else %}{{ xwiki_dbserver }}{% endif %}"
@@ -33,7 +33,7 @@ dbconfig:
   # dbport: 3306
 
 # TODO: make this generic
-xwiki_service: "{% if xwiki_appserver=='xjetty' %}xwiki{% else %}{{ xwiki_appserver }}{% endif %}"
+xwiki_service: "{% if xwiki_appserver == 'xjetty' %}xwiki{% else %}{{ xwiki_appserver }}{% endif %}"
 
 xwiki_etc: /etc/xwiki
 xwiki_lib: /usr/lib/xwiki
@@ -61,14 +61,14 @@ xwiki:
 
 # list of additional ReadWritePaths to configure
 # example for using libreoffice
-#systemdreadwritepaths:
-#  - /var/lib/tomcat/.cache
+# systemdreadwritepaths:
+#   - /var/lib/tomcat/.cache
 systemdreadwritepaths: []
 
 # files to copy to tomcat conf dir
 # example for a keystore
-#tomcatconffiles:
-# - xwiki-rsa.jks
+# tomcatconffiles:
+#  - xwiki-rsa.jks
 tomcatconffiles: []
 
 # catalina connector
@@ -77,25 +77,61 @@ catalina:
   connector: {}
 # example on how to remove the default connector on port 8080
 # and use a ssl enable connector on port 8443 bound to loopback only
-#catalina:
-#  connector:
-#    8080: # port
-#      state: absent
-#    8443:
-#      state: present
-#      maxParameterCount: 1000
-#      address: 127.0.0.1
-#      protocol: "org.apache.coyote.http11.Http11NioProtocol"
-#      maxThreads: 150
-#      SSLEnabled: "true"
-#      elements:
-#        - '<SSLHostConfig>
-#            <Certificate certificateKeystoreFile="conf/xwiki-rsa.jks"
+# catalina:
+#   connector:
+#     8080: # port
+#       state: absent
+#     8443:
+#       state: present
+#       maxParameterCount: 1000
+#       address: 127.0.0.1
+#       protocol: "org.apache.coyote.http11.Http11NioProtocol"
+#       maxThreads: 150
+#       SSLEnabled: "true"
+#       elements:
+#         - '<SSLHostConfig>
+#              <Certificate certificateKeystoreFile="conf/xwiki-rsa.jks"
 #                         certificateKeystorePassword="changeit" type="RSA" />
-#          </SSLHostConfig>'
+#            </SSLHostConfig>'
+
+# configure apache as reverse proxy for xwiki
+use_apache_proxy: false
+apache:
+  a2enmod:
+    - ssl
+    - rewrite
+    - headers
+    - socache_shmcb
+    - deflate
+    - expires
+    - proxy
+    - proxy_http
+    - proxy_html
+  a2dismod: []
+  ListenIP: '*'
+  ServerName: "{{ ansible_fqdn }}"
+  ServerAlias:
+    - "{{ ansible_hostname }}"
+    - "{{ ansible_default_ipv4.address }}"
+  ErrorLog: "${APACHE_LOG_DIR}/error.log"
+  CustomLog: "${APACHE_LOG_DIR}/access.log combined"
+  LogLevel: warn
+  SSLCertificateCopy: false # expect SSLCertificate file and keyfile to be uploaded
+  SSLCertificateFile: false # signed cert w/ optional intermediate certs and dhparams
+  SSLCertificateKeyFile: false
+  XtraConfigHTTP:  # can be used to inject some extra cfg
+  XtraConfigHTTPS: # can be used to inject some extra cfg
+  Proxy: 127.0.0.1:8080
+  ProxyCfg: |
+    Order Deny,Allow
+    Satisfy Any
+  xwiki_proto: http
+  # proxy xwiki url will be "{{ apache.xwiki_proto }}://{{ apache.Proxy }}/xwiki"
+
 
 # TODO:
 #   * webapp path : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/InstallationViaAPT/#HXWikiasrootwebapp28shortURLs29
 #   * sql indexes : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/InstallationWAR/InstallationMySQL/#HIndexes
 #   * user tuning : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Performances/#HLargenumberofusers
+#   * mod_proxy_ajp : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Performances/
 ...
