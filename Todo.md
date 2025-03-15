@@ -6,4 +6,4 @@
   * mod_proxy_ajp : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Performances/#HModProxyAJPConfiguration
   * mod_deflate : cfg /etc/apache2/mods-available/deflate.conf https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Performances/#HModDeflateConfiguration (+ mod_expire)
   * solr : https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/InstallationViaAPT/#HStandaloneSolrsetup
-...
+  * https://www.myxwiki.org/xwiki/bin/view/Infra/
