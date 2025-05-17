@@ -36,7 +36,7 @@
   ansible.builtin.copy:
     src: "{{ apache[item] | basename }}"
     dest: "{{ apache[item] }}"
-    mode: "{{ item == 'SSLCertificateFile' | bool | ternary('0600', '0644') }}"
+    mode: "{{ (item == 'SSLCertificateFile') | bool | ternary('0600', '0644') }}"
   notify: apache restart
   with_items:
     - SSLCertificateFile
