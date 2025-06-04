@@ -46,7 +46,7 @@
   ansible.builtin.include_tasks: tomcatcatalinaconnectorattributes.yml
   vars:
     _port: "{{ _catalinaconnector.key }}"
-    _attributes: "{{ _catalinaconnector.value | string}}"
+    _attributes: "{{ _catalinaconnector.value }}"
   with_dict: "{{ catalina.connector }}"
   loop_control:
     loop_var: _catalinaconnector
