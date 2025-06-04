@@ -6,7 +6,7 @@
     path: /etc/{{ xwiki_appserver }}/server.xml
     xpath: '/Server/Service[@name="Catalina"]/Connector[@port="{{ _port }}"]'
     attribute: "{{ item.key }}"
-    value: "{{ item.value }}"
+    value: "{{ item.value | string }}"
     pretty_print: true
   with_dict: "{{ _attributes }}"
   notify: xwiki restart
