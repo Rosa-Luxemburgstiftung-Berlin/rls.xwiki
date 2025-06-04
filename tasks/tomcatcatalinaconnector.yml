@@ -40,7 +40,7 @@
     - xwiki_appserver is match("tomcat.*")
     - item.value.state | default('present') == 'present'
     - item.value.elements is defined
-    - item.value.elements
+    - item.value.elements | length > 0
 
 - name: tomcat - add catalina connector attributes
   ansible.builtin.include_tasks: tomcatcatalinaconnectorattributes.yml
