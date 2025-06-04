@@ -4,7 +4,7 @@
   ansible.builtin.apt:
     name: "{{ xwiki_required_packages + xwiki_additional_packages }}"
     update_cache: true
-  when: xwiki_required_packages
+  when: (xwiki_required_packages | default([])) | length > 0
 
 - name: xwiki apt key
   ansible.builtin.get_url:
@@ -49,7 +49,7 @@
   when:
     - xwiki_appserver is match("tomcat.*")
     - tomcatjavaopts is defined
-    - tomcatjavaopts
+    - tomcatjavaopts | length > 0
 
 - name: apply xwiki cfg
   ansible.builtin.lineinfile:
