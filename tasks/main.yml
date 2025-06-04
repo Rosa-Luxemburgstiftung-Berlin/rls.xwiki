@@ -77,7 +77,7 @@
   notify:
     - systemctl daemon-reload
     - xwiki restart
-  when: systemdreadwritepaths
+  when: systemdreadwritepaths | length > 0
 
 - name: copy files to tomcat conf dir
   ansible.builtin.copy:
