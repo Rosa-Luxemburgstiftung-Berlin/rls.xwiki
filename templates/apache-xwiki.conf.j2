@@ -10,7 +10,7 @@
     Header set X-Clacks-Overhead "GNU Terry Pratchett"
 
     RewriteEngine On
-	{{ apache.XtraConfigHTTP }}
+	{% if apache.XtraConfigHTTP %}{{ apache.XtraConfigHTTP }}{% endif %}
     RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/
     RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
 </VirtualHost>
@@ -23,7 +23,7 @@
     ServerSignature Off
 
 	RewriteEngine On
-	{{ apache.XtraConfigHTTPS }}
+	{% if apache.XtraConfigHTTPS %}{{ apache.XtraConfigHTTPS }}{% endif %}
 
     SSLEngine on
 

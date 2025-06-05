@@ -43,8 +43,10 @@
     - SSLCertificateKeyFile
   when:
     - apache.SSLCertificateCopy
-    - apache.SSLCertificateFile
-    - apache.SSLCertificateKeyFile
+    - apache.SSLCertificateFile is defined
+    - apache.SSLCertificateFile | length > 0
+    - apache.SSLCertificateKeyFile is defined
+    - apache.SSLCertificateKeyFile | length > 0
 
 - name: copy apache vhost config
   ansible.builtin.template:
