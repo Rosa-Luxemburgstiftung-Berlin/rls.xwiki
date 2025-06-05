@@ -54,7 +54,7 @@
 - name: apply xwiki cfg
   ansible.builtin.lineinfile:
     path: "{{ xwiki_etc }}/xwiki.cfg"
-    line: "{{ item.key }}={{ item.value }}"
+    line: "{{ item.key }}={{ item.value | ternary(item.value, '') }}"
     regexp: '^{{ item.key }} *='
     mode: '0644'
   notify: xwiki restart
