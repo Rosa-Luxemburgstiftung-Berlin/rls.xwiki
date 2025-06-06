@@ -1,5 +1,5 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
-![Static Badge](https://img.shields.io/badge/ansible_12-ready-green?logo=ansible&labelColor=black)
+![Ansible 12 read](https://img.shields.io/badge/ansible_12-ready-green?logo=ansible&labelColor=black)
 
 
 # rls.xwiki
