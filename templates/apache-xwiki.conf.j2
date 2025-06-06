@@ -1,3 +1,4 @@
+# ansible managed
 <VirtualHost {{ apache.ListenIP }}:80>
     ServerName {{ apache.ServerName }}
     {% for alias in apache.ServerAlias -%}
@@ -6,11 +7,13 @@
 
     ServerSignature Off
 
-	# :-)
+    # :-)
     Header set X-Clacks-Overhead "GNU Terry Pratchett"
 
     RewriteEngine On
-	{% if apache.XtraConfigHTTP %}{{ apache.XtraConfigHTTP }}{% endif %}
+
+    {% if apache.XtraConfigHTTP %}{{ apache.XtraConfigHTTP }}{% endif %}
+
     RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/
     RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
 </VirtualHost>
@@ -22,8 +25,9 @@
     {% endfor -%}
     ServerSignature Off
 
-	RewriteEngine On
-	{% if apache.XtraConfigHTTPS %}{{ apache.XtraConfigHTTPS }}{% endif %}
+    RewriteEngine On
+
+    {% if apache.XtraConfigHTTPS %}{{ apache.XtraConfigHTTPS }}{% endif %}
 
     SSLEngine on
 
@@ -36,36 +40,36 @@
     # HTTP Strict Transport Security (mod_headers is required) (63072000 seconds)
     Header always set Strict-Transport-Security "max-age=63072000"
 
-	# :-)
+    # :-)
     Header set X-Clacks-Overhead "GNU Terry Pratchett"
 
-	DocumentRoot /var/www/html
+    DocumentRoot /var/www/html
 
-	ErrorLog {{ apache.ErrorLog }}
-	CustomLog {{ apache.CustomLog }}
-	LogLevel {{ apache.LogLevel }}
+    ErrorLog {{ apache.ErrorLog }}
+    CustomLog {{ apache.CustomLog }}
+    LogLevel {{ apache.LogLevel }}
 
-	# don't loose time with IP address lookups
+    # don't loose time with IP address lookups
     HostnameLookups Off
 
-	RedirectMatch ^/$ /xwiki/
+    RedirectMatch ^/$ /xwiki/
 
-	<Location /xwiki>
-		Order Deny,Allow
-		Satisfy Any
-	</Location>
+    <Location /xwiki>
+        Order Deny,Allow
+        Satisfy Any
+    </Location>
 
-	AllowEncodedSlashes NoDecode
+    AllowEncodedSlashes NoDecode
 
-	ProxyRequests Off
-	<Proxy {{ apache.Proxy }}>
-		{{ apache.ProxyCfg }}
-	</Proxy>
-	ProxyPreserveHost On
-	ProxyPass /xwiki {{ apache.xwiki_proto }}://{{ apache.Proxy }}/xwiki nocanon upgrade=websocket
-	ProxyPassReverse /xwiki {{ apache.xwiki_proto }}://{{ apache.Proxy }}/xwiki nocanon
+    ProxyRequests Off
+    <Proxy {{ apache.Proxy }}>
+        {{ apache.ProxyCfg }}
+    </Proxy>
+    ProxyPreserveHost On
+    ProxyPass /xwiki {{ apache.xwiki_proto }}://{{ apache.Proxy }}/xwiki nocanon upgrade=websocket
+    ProxyPassReverse /xwiki {{ apache.xwiki_proto }}://{{ apache.Proxy }}/xwiki nocanon
 
-	RequestHeader set Forwarded "proto=https"
+    RequestHeader set Forwarded "proto=https"
 </VirtualHost>
 
 SSLProtocol             -all +TLSv1.2 +TLSv1.3
@@ -74,4 +78,4 @@ SSLCipherSuite          ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA25
 SSLHonorCipherOrder     off
 SSLSessionTickets       off
 
-# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+# vim: syntax=apache ts=4 sw=4 sts=4 sr smartindent expandtab
